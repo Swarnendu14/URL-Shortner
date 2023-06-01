@@ -1,5 +1,5 @@
 const URLmodel = require('../model/URLmodel.js');
-const nano= require('nanoid');
+const {customAlphabet}= require('nanoid');
 
 
 const shortURL = async (req,res)=>  {
@@ -14,11 +14,15 @@ const shortURL = async (req,res)=>  {
             } 
             res.status(200).json({status: true, "data": data})
         } else {
-            let urlCode = nano.nanoid(8);
+            const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789_-';
+            const nanoid = customAlphabet(alphabet, 8);
+            
+            let urlCode = nanoid();
             while(1) {
                 const isUrlCode = await URLmodel.findOne({urlCode: urlCode})
-                if (isUrlCode) {
-                    urlCode = nano.nanoid(8);
+                if (isUrlCode ) {
+                    const nanoid = customAlphabet(alphabet, 8);
+                    urlCode = nanoid();
                 }
                 else {
                     break;

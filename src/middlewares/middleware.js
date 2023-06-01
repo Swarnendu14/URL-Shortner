@@ -21,7 +21,7 @@ const validURL = async (req,res,next) => {
 const validPathParam = async (req, res,next)=> {
     try {
         const urlCode = req.params.urlCode;
-        const idRegex = /^[a-zA-Z0-9]+$/;
+        const idRegex = /^[a-zA-Z0-9_-]+$/;
 
         if (!idRegex.test(urlCode)) {
             return res.status(400).json({status: false, message: "Something going wrong"});
