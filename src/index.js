@@ -8,7 +8,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-mongoose.connect('mongodb+srv://swarnenduktpp:Rq0bKY4NZeTmPE0F@cluster0.qntniml.mongodb.net/group11Database?retryWrites=true&w=majority', 
+mongoose.connect('mongodb+srv://adarshpriyadarshi001:5mwf8qpAYZ4glK7H@cluster0.3cmmxwt.mongodb.net/group11Database?retryWrites=true&w=majority', 
 {useNewUrlParser: true})
 .then(()=>{console.log('connected to Database');})
 .catch((err)=>{console.log(err.message)})
