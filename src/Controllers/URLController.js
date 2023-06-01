@@ -15,13 +15,13 @@ const shortURL = async (req,res)=>  {
             res.status(200).json({status: true, "data": data})
         } else {
             const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789_-';
-            const nanoid = customAlphabet(alphabet, 8);
+            const nanoid = customAlphabet(alphabet, 3);
             
             let urlCode = nanoid();
             while(1) {
                 const isUrlCode = await URLmodel.findOne({urlCode: urlCode})
                 if (isUrlCode ) {
-                    const nanoid = customAlphabet(alphabet, 8);
+                    const nanoid = customAlphabet(alphabet, 3);
                     urlCode = nanoid();
                 }
                 else {
@@ -36,12 +36,12 @@ const shortURL = async (req,res)=>  {
             } 
 
             const createShortUrl = await URLmodel.create(data);
-            res.status(200).json({status: true, "data": data})
+            res.status(201).json({status: true, "data": data})
 
         }
 
     } catch(err) {
-        res.status(500).json({status: false, message: "Something going wrong in ShortURL"})
+        res.status(500).json({status: false, message: err.message});
     }
 }
 
@@ -57,7 +57,7 @@ const showURL = async (req,res)=>  {
         res.status(302).redirect(data.longUrl);
 
     } catch(err) {
-        res.status(500).json({status: false, message: "Something going wrong"})
+        res.status(500).json({status: false, message:err.message});
     }
 }
 

@@ -24,9 +24,8 @@ const validPathParam = async (req, res,next)=> {
         const idRegex = /^[a-z0-9_-]+$/;
 
         if (!idRegex.test(urlCode)) {
-            return res.status(400).json({status: false, message: "Something going wrong"});
+            return res.status(400).json({status: false, message: "Invalid URL code"});
         }
-
         next();
     } catch(err) {
         res.status(500).json({status: false, message: err.message})
