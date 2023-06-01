@@ -13,6 +13,7 @@ mongoose.connect('mongodb+srv://adarshpriyadarshi001:5mwf8qpAYZ4glK7H@cluster0.3
 .then(()=>{console.log('connected to Database');})
 .catch((err)=>{console.log(err.message)})
 
+
 app.use('/',router);
 
 const port = process.env.PORT || 3000;
