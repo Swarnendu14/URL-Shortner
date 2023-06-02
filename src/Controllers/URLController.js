@@ -1,7 +1,6 @@
 const URLmodel = require('../model/URLmodel.js');
 const {customAlphabet}= require('nanoid');
 const redis = require("redis");
-
 const { promisify } = require("util");
 
 //1. Connect to the redis server
@@ -17,6 +16,8 @@ redisClient.auth("dW2yO03aBkWYV7Vr0AmK1d6Kj3nvzyCT", function (err) {
 redisClient.on("connect", async function () {
   console.log("Connected to Redis..");
 });
+const expiryTime=24*60*60;
+
 const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
 const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
 
@@ -24,7 +25,11 @@ const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
 const shortURL = async (req,res)=>  {
     try {
         const longURL = req.body.longUrl;
-        const isPresent = await URLmodel.findOne({longUrl: longURL})
+        let cahcedData = await GET_ASYNC(`${longURL}`);
+        if(cahcedData) {
+            return res.status(200).json({status: true, "data": JSON.parse(cahcedData)});
+        }
+        const isPresent = await URLmodel.findOne({longUrl: longURL});
         if (isPresent) {
             const data = {
                 longUrl: isPresent.longUrl,
@@ -54,6 +59,11 @@ const shortURL = async (req,res)=>  {
                 urlCode: urlCode
             } 
             await SET_ASYNC(`${data.urlCode}`,data.longUrl);
+            await redisClient.expire(`${data.urlCode}`,expiryTime);
+
+            await SET_ASYNC(`${data.longUrl}`,JSON.stringify(data));
+            await redisClient.expire(`${data.longUrl}`,expiryTime);
+
             const createShortUrl = await URLmodel.create(data);
             res.status(201).json({status: true, "data": data})
         }
