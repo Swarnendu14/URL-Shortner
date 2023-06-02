@@ -15,13 +15,13 @@ const shortURL = async (req,res)=>  {
             res.status(200).json({status: true, "data": data})
         } else {
             const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789_-';
-            const nanoid = customAlphabet(alphabet, 3);
+            const nanoid = customAlphabet(alphabet, 8);
             
             let urlCode = nanoid();
             while(1) {
                 const isUrlCode = await URLmodel.findOne({urlCode: urlCode})
                 if (isUrlCode ) {
-                    const nanoid = customAlphabet(alphabet, 3);
+                    const nanoid = customAlphabet(alphabet, 8);
                     urlCode = nanoid();
                 }
                 else {
