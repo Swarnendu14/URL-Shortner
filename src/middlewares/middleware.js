@@ -1,3 +1,4 @@
+const validator = require("validator")
 
 const validURL = async (req,res,next) => {
     try {
@@ -5,11 +6,9 @@ const validURL = async (req,res,next) => {
         if (!longURL) {
             return res.status(400).json({status: false, message: "URL not given"})
         }
-        const urlRegex = /^(https?|ftp?| http):\/\/[^\s/$.?#].[^\s]*$/;
 
-        if (!urlRegex.test(longURL)) {
-            return res.status(400).json({status: false, message: "Invalid URL"})
-        }
+        if (!validator.isURL(longURL)) 
+            return res.status(400).send({ status: false, msg: "invalid longUrl" })
 
         next();
         
