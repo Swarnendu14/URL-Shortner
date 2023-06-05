@@ -59,6 +59,7 @@ const shortURL = async (req,res)=>  {
                 shortUrl: shortURL,
                 urlCode: urlCode
             } 
+            
             await SET_ASYNC(`${data.urlCode}`,data.longUrl);
             await redisClient.expire(`${data.urlCode}`,expiryTime);
 
