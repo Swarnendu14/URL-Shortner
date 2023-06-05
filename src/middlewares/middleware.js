@@ -1,4 +1,6 @@
 const validator = require("validator")
+const isURL = require('is-url')
+
 
 const validURL = async (req,res,next) => {
     try {
@@ -6,10 +8,12 @@ const validURL = async (req,res,next) => {
         if (!longURL) {
             return res.status(400).json({status: false, message: "URL not given"})
         }
-
-        if (!validator.isURL(longURL)) 
+        if(!isURL(longURL)) 
             return res.status(400).send({ status: false, msg: "invalid longUrl" })
 
+        if (!validator.isURL(longURL))  
+            return res.status(400).send({ status: false, msg: "invalid longUrl" })
+        
         next();
         
     } catch(err) {
