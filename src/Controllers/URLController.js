@@ -85,7 +85,7 @@ const showURL = async (req,res)=>  {
         }
         const data = await URLmodel.findOne({urlCode: URLcode})
         if (!data) {
-            return res.status(404).json({status: false, message: "Invalid URLcode"});
+            return res.status(404).json({status: false, message: ""});
         }
         res.status(200).redirect(data.longUrl);
     } catch(err) {
