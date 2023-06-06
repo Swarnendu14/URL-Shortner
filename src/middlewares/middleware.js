@@ -6,7 +6,7 @@ const validURL = async (req,res,next) => {
     try {
         const longURL = req.body.longUrl;
         if (!longURL) {
-            return res.status(400).json({status: false, message: "URL not given"})
+            return res.status(400).json({status: false, message: ""})
         }
 
         if(!isURL(longURL)){
