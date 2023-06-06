@@ -1,6 +1,6 @@
 const validator = require("validator")
 const isURL = require('is-url')
-const axios = require('axios')
+// const axios = require('axios')
 
 const validURL = async (req,res,next) => {
     try {
@@ -16,8 +16,8 @@ const validURL = async (req,res,next) => {
         if (!validator.isURL(longURL)) 
             return res.status(400).send({ status: false, msg: "invalid longUrl" })
 
-        let checkURL = await axios.get(longURL).then(() => longURL).catch(() => null)
-        if(!checkURL) return res.status(400).send({status : false, message : "invalid longUrl"})
+        // let checkURL = await axios.get(longURL).then(() => longURL).catch(() => null)
+        // if(!checkURL) return res.status(400).send({status : false, message : "invalid longUrl"})
 
         next();
         
