@@ -28,7 +28,7 @@ const shortURL = async (req,res)=>  {
         const longURL = req.body.longUrl;
         let cahcedData = await GET_ASYNC(`${longURL}`);
         if(cahcedData) {
-            return res.status(200).json({status: true, "data": JSON.parse(cahcedData)});
+            return res.status(201).json({status: true, "data": JSON.parse(cahcedData)});
         }
         const isPresent = await URLmodel.findOne({longUrl: longURL});
         if (isPresent) {
@@ -37,7 +37,7 @@ const shortURL = async (req,res)=>  {
                 shortUrl: isPresent.shortUrl,
                 urlCode: isPresent.urlCode
             } 
-            res.status(200).json({status: true, "data": data})
+            res.status(201).json({status: true, "data": data})
         } else {
             const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789_-';
             const nanoid = customAlphabet(alphabet, 8);
@@ -81,13 +81,13 @@ const showURL = async (req,res)=>  {
         let cahcedData = await GET_ASYNC(`${URLcode}`);
         
         if(cahcedData) {
-            return res.status(302).redirect(cahcedData);
+            return res.status(200).redirect(cahcedData);
         }
         const data = await URLmodel.findOne({urlCode: URLcode})
         if (!data) {
             return res.status(404).json({status: false, message: "Invalid URLcode"});
         }
-        res.status(302).redirect(data.longUrl);
+        res.status(200).redirect(data.longUrl);
     } catch(err) {
         res.status(500).json({status: false, message:err.message});
     }
